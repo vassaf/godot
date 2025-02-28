@@ -1,0 +1,60 @@
+[gd_scene load_steps=11 format=3 uid="uid://d0e6d57nnpdse"]
+
+[ext_resource type="Texture2D" uid="uid://dth7pdgn1502w" path="res://assets/sky/rosendal_plains_2_2k.exr" id="1_4b6di"]
+[ext_resource type="Texture2D" uid="uid://d4fl6l33lkjud" path="res://assets/textures/stone/textures/gray_rocks_diff_4k.jpg" id="2_5p2oc"]
+[ext_resource type="Texture2D" uid="uid://duc0mj2sa4p7h" path="res://assets/textures/stone/textures/gray_rocks_nor_gl_4k.jpg" id="3_j4eg3"]
+[ext_resource type="Texture2D" uid="uid://bdch14fu68fgo" path="res://assets/textures/stone/textures/gray_rocks_arm_4k.jpg" id="4_jtmav"]
+[ext_resource type="PackedScene" uid="uid://dmpiyrr7i3tkf" path="res://assets/buildings/wood_house.glb" id="5_cpas4"]
+[ext_resource type="PackedScene" uid="uid://b8fjbuo1mpqy3" path="res://scenes/player/player.tscn" id="6_vhnfn"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_erya5"]
+panorama = ExtResource("1_4b6di")
+
+[sub_resource type="Sky" id="Sky_a0kba"]
+sky_material = SubResource("PanoramaSkyMaterial_erya5")
+
+[sub_resource type="Environment" id="Environment_rkqt8"]
+background_mode = 2
+sky = SubResource("Sky_a0kba")
+tonemap_mode = 2
+fog_light_color = Color(0.514866, 0.551428, 0.62436, 1)
+fog_height = -42.67
+fog_height_density = 1.1
+volumetric_fog_density = 0.0188
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dku21"]
+albedo_texture = ExtResource("2_5p2oc")
+roughness_texture = ExtResource("4_jtmav")
+normal_enabled = true
+normal_texture = ExtResource("3_j4eg3")
+uv1_scale = Vector3(600, 600, 600)
+
+[node name="world" type="Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866024, -0.433016, 0.250001, 0.099856, 0.340143, 0.935057, -0.489931, 0.834746, -0.251333, -2.29851, 4.60511, -0.194061)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_rkqt8")
+
+[node name="map" type="Node3D" parent="."]
+
+[node name="floor" type="CSGBox3D" parent="map"]
+transform = Transform3D(1, -0.000179076, 0.00012758, 0.000179096, 1, -0.000137958, -0.000127552, 0.000137982, 1, 0, -0.5, 0)
+material_override = SubResource("StandardMaterial3D_dku21")
+use_collision = true
+size = Vector3(1000, 1, 1000)
+
+[node name="Houses" type="Node3D" parent="map"]
+
+[node name="wood_house" parent="map/Houses" instance=ExtResource("5_cpas4")]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 8.88851, 6.45104, -128.266)
+
+[node name="wood_house2" parent="map/Houses" instance=ExtResource("5_cpas4")]
+transform = Transform3D(7.23076, 0, -6.90769, 0, 10, 0, 6.90769, 0, 7.23076, 46.4857, 6.45552, -111.882)
+
+[node name="wood_house3" parent="map/Houses" instance=ExtResource("5_cpas4")]
+transform = Transform3D(7.34429, 0, 6.78685, 0, 10, 0, -6.78685, 0, 7.34429, -21.0848, 6.44421, -117.673)
+
+[node name="Player" parent="." instance=ExtResource("6_vhnfn")]
